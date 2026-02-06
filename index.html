@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Distiller Calc</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 16px;
+      background: var(--tg-theme-bg-color, #fff);
+      color: var(--tg-theme-text-color, #000);
+    }
+
+    h2 {
+      margin-top: 24px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #ddd;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .tab.active {
+      background: var(--tg-theme-button-color, #2ea6ff);
+      color: var(--tg-theme-button-text-color, #fff);
+    }
+
+    .calculator {
+      display: none;
+      margin-top: 16px;
+    }
+
+    .calculator.active {
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 6px 0;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button.calc {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--tg-theme-button-color, #2ea6ff);
+      color: var(--tg-theme-button-text-color, #fff);
+    }
+
+    .result {
+      margin-top: 16px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .overlay {
+      min-height: 100vh;
+    }
+  </style>
+</head>
+
+<body>
+<div class="overlay" onclick="hideKeyboard(event)">
+
+  <div class="tabs">
+    <button class="tab active" onclick="showCalc('dilution')">Разбавление</button>
+    <button class="tab" onclick="showCalc('mixing')">Смешение</button>
+    <button class="tab" onclick="showCalc('areometer')">Ареометр</button>
+  </div>
+
+  <!-- Разбавление -->
+  <div id="dilution" class="calculator active">
+    <h2>Разбавление</h2>
+
+    <input id="d_v1" placeholder="Объём спирта, л">
+    <input id="d_c1" placeholder="Начальная крепость, %">
+    <input id="d_c2" placeholder="Целевая крепость, %">
+
+    <button class="calc" onclick="calcDilution()">Рассчитать</button>
+    <div id="d_result" class="result"></div>
+  </div>
+
+  <!-- Смешение -->
+  <div id="mixing" class="calculator">
+    <h2>Смешение</h2>
+
+    <input id="m_v1" placeholder="Объём 1, л">
+    <input id="m_c1" placeholder="Крепость 1, %">
+    <input id="m_v2" placeholder="Объём 2, л">
+    <input id="m_c2" placeholder="Крепость 2, %">
+
+    <button class="calc" onclick="calcMixing()">Рассчитать</button>
+    <div id="m_result" class="result"></div>
+  </div>
+
+  <!-- Ареометр -->
+  <div id="areometer" class="calculator">
+    <h2>Ареометр</h2>
+
+    <input id="a_t" placeholder="Температура, °C">
+    <input id="a_c" placeholder="Показание, %">
+
+    <button class="calc" onclick="calcAreometer()">Рассчитать</button>
+    <div id="a_result" class="result"></div>
+  </div>
+
+</div>
+
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.expand();
+
+  function parseNumber(v) {
+    if (!v) return NaN;
+    return parseFloat(v.replace(',', '.'));
+  }
+
+  function showCalc(id) {
+    document.querySelectorAll('.calculator').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function hideKeyboard(e) {
+    if (e.target.tagName !== 'INPUT') {
+      document.activeElement.blur();
+    }
+  }
+
+  // Разбавление
+  function calcDilution() {
+    const v1 = parseNumber(d_v1.value);
+    const c1 = parseNumber(d_c1.value);
+    const c2 = parseNumber(d_c2.value);
+
+    if (!v1 || !c1 || !c2 || c2 <= 0) {
+      d_result.innerText = 'Ошибка ввода';
+      return;
+    }
+
+    const water = v1 * (c1 - c2) / c2;
+    d_result.innerText = `Добавить воды: ${water.toFixed(2)} л`;
+  }
+
+  // Смешение
+  function calcMixing() {
+    const v1 = parseNumber(m_v1.value);
+    const c1 = parseNumber(m_c1.value);
+    const v2 = parseNumber(m_v2.value);
+    const c2 = parseNumber(m_c2.value);
+
+    if (!v1 || !c1 || !v2 || !c2 || v1 + v2 === 0) {
+      m_result.innerText = 'Ошибка ввода';
+      return;
+    }
+
+    const strength = (v1 * c1 + v2 * c2) / (v1 + v2);
+    m_result.innerText = `Крепость: ${strength.toFixed(2)} %`;
+  }
+
+  // Ареометр
+  function calcAreometer() {
+    const t = parseNumber(a_t.value);
+    const c = parseNumber(a_c.value);
+
+    if (isNaN(t) || isNaN(c)) {
+      a_result.innerText = 'Ошибка ввода';
+      return;
+    }
+
+    let k = c < 40 ? 0.3 : c < 60 ? 0.35 : 0.4;
+    const real = Math.min(100, Math.max(0, c + (t - 20) * k));
+
+    a_result.innerText = `Реальная крепость: ${real.toFixed(2)} %`;
+  }
+</script>
+</body>
+</html>
