@@ -97,9 +97,9 @@
   <div id="dilution" class="calculator active">
     <h2>Разбавление спирта водой</h2>
 
-    <input id="d_v1" placeholder="Объём спирта, л">
-    <input id="d_c1" placeholder="Начальная крепость, °">
-    <input id="d_c2" placeholder="Требуемая крепость, °">
+    <input id="d_v1" placeholder="Объём спирта, л" type="number" inputmode="decimal" pattern="[0-9.,]*">
+    <input id="d_c1" placeholder="Начальная крепость, °" type="number" inputmode="decimal" pattern="[0-9.,]*">
+    <input id="d_c2" placeholder="Требуемая крепость, °" type="number" inputmode="decimal" pattern="[0-9.,]*">
 
     <button class="calc" onclick="calcDilution()">Рассчитать</button>
     <div id="d_result" class="result"></div>
@@ -109,10 +109,10 @@
   <div id="mixing" class="calculator">
     <h2>Смешение спиртов</h2>
 
-    <input id="m_v1" placeholder="Объём 1, л">
-    <input id="m_c1" placeholder="Крепость 1, °">
-    <input id="m_v2" placeholder="Объём 2, л">
-    <input id="m_c2" placeholder="Крепость 2, °">
+    <input id="m_v1" placeholder="Объём 1, л" type="number" inputmode="decimal" pattern="[0-9.,]*">
+    <input id="m_c1" placeholder="Крепость 1, °" type="number" inputmode="decimal" pattern="[0-9.,]*">
+    <input id="m_v2" placeholder="Объём 2, л" type="number" inputmode="decimal" pattern="[0-9.,]*">
+    <input id="m_c2" placeholder="Крепость 2, °" type="number" inputmode="decimal" pattern="[0-9.,]*">
 
     <button class="calc" onclick="calcMixing()">Рассчитать</button>
     <div id="m_result" class="result"></div>
@@ -122,8 +122,8 @@
   <div id="areometer" class="calculator">
     <h2>Калибровка ареометра</h2>
 
-    <input id="a_t" placeholder="Температура в помещении, °C">
-    <input id="a_c" placeholder="Показание ареомертра">
+    <input id="a_t" placeholder="Температура в помещении, °C" type="number" inputmode="decimal" pattern="[0-9.,]*">
+    <input id="a_c" placeholder="Показание ареомертра" type="number" inputmode="decimal" pattern="[0-9.,]*">
 
     <button class="calc" onclick="calcAreometer()">Рассчитать</button>
     <div id="a_result" class="result"></div>
