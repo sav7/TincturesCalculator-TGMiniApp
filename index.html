@@ -88,18 +88,18 @@
 <div class="overlay" onclick="hideKeyboard(event)">
 
   <div class="tabs">
-    <button class="tab active" onclick="showCalc('dilution')">Разбавление</button>
-    <button class="tab" onclick="showCalc('mixing')">Смешение</button>
-    <button class="tab" onclick="showCalc('areometer')">Ареометр</button>
+    <button class="tab active" onclick="showCalc('dilution')">Разбавление спирта водой</button>
+    <button class="tab" onclick="showCalc('mixing')">Смешение спиртов</button>
+    <button class="tab" onclick="showCalc('areometer')">Калибровка ареометра</button>
   </div>
 
   <!-- Разбавление -->
   <div id="dilution" class="calculator active">
-    <h2>Разбавление</h2>
+    <h2>Разбавление спирта водой</h2>
 
     <input id="d_v1" placeholder="Объём спирта, л">
-    <input id="d_c1" placeholder="Начальная крепость, %">
-    <input id="d_c2" placeholder="Целевая крепость, %">
+    <input id="d_c1" placeholder="Начальная крепость, °">
+    <input id="d_c2" placeholder="Требуемая крепость, °">
 
     <button class="calc" onclick="calcDilution()">Рассчитать</button>
     <div id="d_result" class="result"></div>
@@ -107,12 +107,12 @@
 
   <!-- Смешение -->
   <div id="mixing" class="calculator">
-    <h2>Смешение</h2>
+    <h2>Смешение спиртов</h2>
 
     <input id="m_v1" placeholder="Объём 1, л">
-    <input id="m_c1" placeholder="Крепость 1, %">
+    <input id="m_c1" placeholder="Крепость 1, °">
     <input id="m_v2" placeholder="Объём 2, л">
-    <input id="m_c2" placeholder="Крепость 2, %">
+    <input id="m_c2" placeholder="Крепость 2, °">
 
     <button class="calc" onclick="calcMixing()">Рассчитать</button>
     <div id="m_result" class="result"></div>
@@ -120,10 +120,10 @@
 
   <!-- Ареометр -->
   <div id="areometer" class="calculator">
-    <h2>Ареометр</h2>
+    <h2>Калибровка ареометра</h2>
 
-    <input id="a_t" placeholder="Температура, °C">
-    <input id="a_c" placeholder="Показание, %">
+    <input id="a_t" placeholder="Температура в помещении, °C">
+    <input id="a_c" placeholder="Показание ареомертра, %">
 
     <button class="calc" onclick="calcAreometer()">Рассчитать</button>
     <div id="a_result" class="result"></div>
