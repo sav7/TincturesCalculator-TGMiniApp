@@ -81,6 +81,17 @@
     .overlay {
       min-height: 100vh;
     }
+
+    .error {
+  color: #b00020;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.error s {
+  display: block;
+  margin-bottom: 6px;
+}
   </style>
 </head>
 
@@ -171,19 +182,31 @@
 
   // Смешение
   function calcMixing() {
-    const v1 = parseNumber(m_v1.value);
-    const c1 = parseNumber(m_c1.value);
-    const v2 = parseNumber(m_v2.value);
-    const c2 = parseNumber(m_c2.value);
+  const v1 = parseNumber(m_v1.value);
+  const c1 = parseNumber(m_c1.value);
+  const v2 = parseNumber(m_v2.value);
+  const c2 = parseNumber(m_c2.value);
 
-    if (!v1 || !c1 || !v2 || !c2 || v1 + v2 === 0) {
-      m_result.innerText = 'Ошибка ввода';
-      return;
-    }
-
-    const strength = (v1 * c1 + v2 * c2) / (v1 + v2);
-    m_result.innerText = `Крепость: ${strength.toFixed(2)} %`;
+  // базовая валидация
+  if (isNaN(v1) || isNaN(c1) || isNaN(v2) || isNaN(c2) || v1 + v2 === 0) {
+    m_result.innerText = 'Ошибка ввода';
+    return;
   }
+
+  // ❗ попытка смешать спирт с водой
+  if (c1 === 0 || c2 === 0) {
+    m_result.innerHTML = `
+      <div class="error">
+        <s>Ну куда ты воду лить собрался!</s>
+        Данный расчет можно провести в разделе «Разбавление спирта водой»
+      </div>
+    `;
+    return;
+  }
+
+  const strength = (v1 * c1 + v2 * c2) / (v1 + v2);
+  m_result.innerText = `Крепость: ${strength.toFixed(2)} %`;
+}
 
   // Ареометр
   function calcAreometer() {
