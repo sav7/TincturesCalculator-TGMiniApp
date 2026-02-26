@@ -92,6 +92,167 @@
   display: block;
   margin-bottom: 6px;
 }
+    /* Кнопка "Поддержать автора" */
+.donate-btn {
+  width: calc(100% - 32px);
+  margin: 16px auto 10px auto;
+  padding: 16px;
+  background: linear-gradient(90deg, #f44336, #e91e63);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: opacity 0.3s ease;
+}
+
+.donate-btn:active {
+  opacity: 0.8;
+}
+
+/* Скрытие кнопки при фокусе на input */
+.donate-btn.hidden {
+  display: none !important;
+}
+
+/* Модальное окно */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: var(--tg-theme-bg-color, #fff);
+  width: 90%;
+  max-width: 400px;
+  max-height: 90vh;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.close {
+  font-size: 28px;
+  font-weight: bold;
+  color: #999;
+  cursor: pointer;
+  line-height: 1;
+  user-select: none;
+}
+
+.close:active {
+  color: #666;
+}
+
+.modal-body {
+  padding: 20px;
+  text-align: center;
+  overflow-y: auto;
+  max-height: calc(90vh - 60px);
+}
+
+.donation-icon {
+  font-size: 50px;
+  margin-bottom: 12px;
+}
+
+.donation-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.qr-container {
+  margin: 20px 0;
+}
+
+.qr-code {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.qr-caption {
+  font-size: 12px;
+  color: #999;
+  margin-top: 12px;
+}
+
+.browser-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  margin: 20px 0 10px 0;
+  background: linear-gradient(90deg, #2196F3, #9C27B0);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: opacity 0.3s;
+  box-sizing: border-box;
+}
+
+.browser-btn:active {
+  opacity: 0.8;
+}
+
+.donation-footer {
+  margin-top: 10px;
+}
+
+.donation-footer p {
+  margin: 6px 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.donation-footer .small-text {
+  font-size: 11px;
+  color: #999;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
   </style>
 </head>
 
@@ -139,8 +300,108 @@
     <button class="calc" onclick="calcAreometer()">Рассчитать</button>
     <div id="a_result" class="result"></div>
   </div>
-
+<!-- Кнопка поддержки -->
+  <button id="donateBtn" class="donate-btn" onclick="openDonation()">
+    ❤️ Поддержать автора
+  </button>
+  
 </div>
+
+<!-- Модальное окно доната (ПОСЛЕ overlay, перед </body>) -->
+<div id="donationModal" class="modal" onclick="closeOnOutside(event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Поддержать автора</h2>
+      <span class="close" onclick="closeDonation()">&times;</span>
+    </div>
+    
+    <div class="modal-body">
+      <div class="donation-icon">❤️</div>
+      <p class="donation-subtitle">Любой донат – поддержка</p>
+      
+      <!-- QR-код -->
+      <div class="qr-container">
+        <img src="donation-qr.jpg" alt="QR код для оплаты" class="qr-code">
+        <p class="qr-caption">Отсканируйте QR-код для оплаты</p>
+      </div>
+      
+      <!-- Кнопка открытия в браузере -->
+      <a href="https://keepz.me/qr/51767" target="_blank" class="browser-btn" onclick="closeDonation()">
+        🌐 Открыть в браузере
+      </a>
+      
+      <!-- Дополнительный текст -->
+      <div class="donation-footer">
+        <p>Спасибо за использование приложения!</p>
+        <p class="small-text">Ваша поддержка помогает развивать приложение</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // === ЛОГИКА ДОНАТА ===
+  
+  // Открытие модального окна
+  function openDonation() {
+    const modal = document.getElementById('donationModal');
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    
+    if (tg && tg.HapticFeedback) {
+      tg.HapticFeedback.impactOccurred('medium');
+    }
+  }
+  
+  // Закрытие модального окна
+  function closeDonation() {
+    const modal = document.getElementById('donationModal');
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+  
+  // Закрытие по клику вне модального окна
+  function closeOnOutside(e) {
+    if (e.target.id === 'donationModal') {
+      closeDonation();
+    }
+  }
+  
+  // Скрытие кнопки доната при открытой клавиатуре
+  document.addEventListener('DOMContentLoaded', function() {
+    const donateBtn = document.getElementById('donateBtn');
+    const inputs = document.querySelectorAll('input');
+    
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        donateBtn.classList.add('hidden');
+      });
+      
+      input.addEventListener('blur', function() {
+        setTimeout(() => {
+          if (!document.activeElement || document.activeElement.tagName !== 'INPUT') {
+            donateBtn.classList.remove('hidden');
+          }
+        }, 100);
+      });
+    });
+  });
+  
+</script>
+```
+
+---
+
+## 📍 Место 4: Загрузить изображение QR-кода
+
+**Положите файл `donation-qr.jpg` в ту же папку, где находится HTML файл.**
+
+Структура должна быть:
+```
+📁 ваша-папка/
+  📄 index.html (ваш HTML файл)
+  📄 donation-qr.jpg (изображение QR-кода)
 
 <script>
   const tg = window.Telegram.WebApp;
