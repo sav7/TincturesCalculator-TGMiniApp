@@ -269,9 +269,9 @@
   <div id="dilution" class="calculator active">
     <h2>Разбавление спирта водой</h2>
 
-    <input id="d_v1" placeholder="Объём спирта, л" type="number" inputmode="decimal">
-    <input id="d_c1" placeholder="Начальная крепость, °" type="number" inputmode="decimal">
-    <input id="d_c2" placeholder="Требуемая крепость, °" type="number" inputmode="decimal">
+    <input id="d_v1" placeholder="Объём спирта, л" type="text" inputmode="decimal">
+    <input id="d_c1" placeholder="Начальная крепость, °" type="text" inputmode="decimal">
+    <input id="d_c2" placeholder="Требуемая крепость, °" type="text" inputmode="decimal">
 
     <button class="calc" onclick="calcDilution()">Рассчитать</button>
     <div id="d_result" class="result"></div>
@@ -281,10 +281,10 @@
   <div id="mixing" class="calculator">
     <h2>Смешение спиртов</h2>
 
-    <input id="m_v1" placeholder="Объём спирта 1, л" type="number" inputmode="decimal">
-    <input id="m_c1" placeholder="Крепость спирта 1, °" type="number" inputmode="decimal">
-    <input id="m_v2" placeholder="Объём спирта 2, л" type="number" inputmode="decimal">
-    <input id="m_c2" placeholder="Крепость спирта 2, °" type="number" inputmode="decimal">
+    <input id="m_v1" placeholder="Объём спирта 1, л" type="text" inputmode="decimal">
+    <input id="m_c1" placeholder="Крепость спирта 1, °" type="text" inputmode="decimal">
+    <input id="m_v2" placeholder="Объём спирта 2, л" type="text" inputmode="decimal">
+    <input id="m_c2" placeholder="Крепость спирта 2, °" type="text" inputmode="decimal">
 
     <button class="calc" onclick="calcMixing()">Рассчитать</button>
     <div id="m_result" class="result"></div>
@@ -294,8 +294,8 @@
   <div id="areometer" class="calculator">
     <h2>Калибровка ареометра</h2>
 
-    <input id="a_t" placeholder="Температура в помещении, °C" type="number" inputmode="decimal">
-    <input id="a_c" placeholder="Показание ареометра" type="number" inputmode="decimal">
+    <input id="a_t" placeholder="Температура в помещении, °C" type="text" inputmode="decimal">
+    <input id="a_c" placeholder="Показание ареометра" type="text" inputmode="decimal">
 
     <button class="calc" onclick="calcAreometer()">Рассчитать</button>
     <div id="a_result" class="result"></div>
@@ -326,7 +326,7 @@
       </div>
       
       <!-- Кнопка открытия в браузере -->
-      <a href="https://keepz.me/qr/51767" target="_blank" class="browser-btn" onclick="closeDonation()">
+      <a href="https://tiny.keepz.me/khtc296w" target="_blank" class="browser-btn" onclick="closeDonation()">
         🌐 Открыть в браузере
       </a>
       
