@@ -448,7 +448,7 @@
   }
 
   const strength = (v1 * c1 + v2 * c2) / (v1 + v2);
-  m_result.innerText = `Крепость: ${strength.toFixed(2)} %`;
+  m_result.innerText = `Крепость: ${strength.toFixed(2)} °`;
 }
 
   // Ареометр
@@ -464,7 +464,7 @@
     let k = c < 40 ? 0.3 : c < 60 ? 0.35 : 0.4;
     const real = Math.min(100, Math.max(0, c + (t - 20) * k));
 
-    a_result.innerText = `Реальная крепость: ${real.toFixed(2)} %`;
+    a_result.innerText = `Реальная крепость: ${real.toFixed(2)} °`;
   }
 </script>
 </body>
